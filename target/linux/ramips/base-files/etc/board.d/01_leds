@@ -270,6 +270,12 @@ case $board in
 	zte-q7)
 		set_wifi_led "zte:blue:status"
 		;;
+	youku-yk1)
+		ucidef_set_led_default "power" "power" "youku-yk1:blue:power" "1"
+		# ucidef_set_led_netdev "wan" "wan" "youku-yk1:blue:wan" "eth0.2"
+		set_usb_led "youku-yk1:blue:usb"
+		set_wifi_led "youku-yk1:blue:air"
+		;;
 esac
 
 board_config_flush

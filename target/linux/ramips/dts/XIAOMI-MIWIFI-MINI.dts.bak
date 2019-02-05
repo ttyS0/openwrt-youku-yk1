@@ -3,9 +3,9 @@
 /include/ "mt7620a.dtsi"
 
 / {
-	compatible = "youku,yk1", "ralink,mt7620a-soc";
-	model = "YOUKU YK1";
-	
+	compatible = "XIAOMI MIWIFI MINI", "ralink,mt7620a-soc";
+	model = "Xiaomi MiWiFi Mini";
+
 	chosen {
 		bootargs = "console=ttyS0,115200";
 	};
@@ -15,11 +15,11 @@
 			status = "okay";
 		};
 
-		gpio2: gpio@660 {
+		gpio1: gpio@638 {
 			status = "okay";
 		};
 
-		gpio3: gpio@688 {
+		gpio2: gpio@660 {
 			status = "okay";
 		};
 
@@ -29,15 +29,14 @@
 			m25p80@0 {
 				#address-cells = <1>;
 				#size-cells = <1>;
-				compatible = "w25q256";
+				compatible = "w25q128";
 				reg = <0 0>;
-				linux,modalias = "m25p80", "w25q256";
+				linux,modalias = "m25p80", "w25q128";
 				spi-max-frequency = <10000000>;
 
 				partition@0 {
 					label = "u-boot";
 					reg = <0x0 0x30000>;
-					read-only;
 				};
 
 				partition@30000 {
@@ -54,10 +53,34 @@
 
 				partition@50000 {
 					label = "firmware";
-					reg = <0x50000 0x1fb0000>;
+					reg = <0x50000 0xf80000>;
+				};
+
+				partition@fd0000 {
+					label = "crash";
+					reg = <0xfd0000 0x10000>;
+				};
+
+				partition@fe0000 {
+					label = "reserved";
+					reg = <0xfe0000 0x10000>;
+					read-only;
+				};
+
+				partition@ff0000 {
+					label = "Bdata";
+					reg = <0xff0000 0x10000>;
 				};
 			};
 		};
+	};
+
+	ehci@101c0000 {
+		status = "okay";
+	};
+
+	ohci@101c1000 {
+		status = "okay";
 	};
 
 	ethernet@10100000 {
@@ -67,12 +90,8 @@
 		ralink,port-map = "llllw";
 	};
 
-	ehci@101c0000 {
-		status = "okay";
-	};
-
-	ohci@101c1000 {
-		status = "okay";
+	wmac@10180000 {
+		ralink,mtd-eeprom = <&factory 0>;
 	};
 
 	pcie@10140000 {
@@ -88,39 +107,30 @@
 		};
 	};
 
-	sdhci@10130000 {
-		status = "okay";
-	};
-	
-	wmac@10180000 {
-		ralink,mtd-eeprom = <&factory 0>;
-	};
-
 	pinctrl {
 		state_default: pinctrl0 {
 			gpio {
-				ralink,group = "i2c", "rgmii1", "ephy", "wled";
+				ralink,group = "i2c", "rgmii1";
 				ralink,function = "gpio";
 			};
 		};
 	};
-	
+
 	gpio-leds {
 		compatible = "gpio-leds";
-		wan {
-			label = "youku:blue:wan";
-			gpios = <&gpio2 4 1>;
+
+		blue {
+			label = "xiaomi:blue:status";
+			gpios = <&gpio1 0 1>;
 		};
-		air {
-			label = "youku:blue:air";
-			gpios = <&gpio3 0 1>;
+
+		yellow {
+			label = "xiaomi:yellow:status";
+			gpios = <&gpio1 2 1>;
 		};
-		usb {
-			label = "youku:blue:usb";
-			gpios = <&gpio1 11 1>;
-		};
-		power {
-			label = "youku:blue:power";
+
+		red {
+			label = "xiaomi:red:status";
 			gpios = <&gpio1 5 1>;
 		};
 	};
@@ -132,7 +142,7 @@
 		poll-interval = <20>;
 		reset {
 			label = "reset";
-			gpios = <&gpio0 1 1>;
+			gpios = <&gpio1 6 0>;
 			linux,code = <0x198>;
 		};
 	};

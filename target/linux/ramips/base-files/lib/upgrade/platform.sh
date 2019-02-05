@@ -125,6 +125,7 @@ platform_check_image() {
 	x5 |\
 	x8 |\
 	xiaomi-miwifi-mini |\
+	youku-yk1 |\
 	y1 |\
 	y1s |\
 	zbt-wa05 |\

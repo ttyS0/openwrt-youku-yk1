@@ -146,6 +146,7 @@ ramips_setup_interfaces()
 	wsr-1166 | \
 	wt1520 | \
 	xiaomi-miwifi-mini |\
+	youku-yk1 |\
 	y1|\
 	zbt-wg2626)
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth0.2"

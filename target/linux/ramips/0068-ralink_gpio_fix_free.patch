@@ -1,0 +1,25 @@
+--- a/drivers/gpio/gpio-ralink.c	2014-09-23 11:06:10.044595879 +0200
++++ b/drivers/gpio/gpio-ralink.c	2014-09-23 11:11:14.063674520 +0200
+@@ -258,6 +258,14 @@
+ 	return pinctrl_request_gpio(gpio);
+ }
+ 
++static void ralink_gpio_free(struct gpio_chip *chip, unsigned offset)
++{
++        int gpio = chip->base + offset;
++
++        pinctrl_free_gpio(gpio);
++}
++
++
+ static int ralink_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -310,6 +318,7 @@
+ 	rg->chip.get = ralink_gpio_get;
+ 	rg->chip.set = ralink_gpio_set;
+ 	rg->chip.request = ralink_gpio_request;
++        rg->chip.free = ralink_gpio_free;
+ 	rg->chip.to_irq = ralink_gpio_to_irq;
+ 
+ 	/* set polarity to low for all lines */

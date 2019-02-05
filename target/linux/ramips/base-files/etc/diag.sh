@@ -240,6 +240,9 @@ get_status_led() {
 	xiaomi-mini)
 		status_led="xiaomi:red:status"
 		;;
+	youku-yk1)
+		status_led="youku-yk1:blue:air"
+		;;
 	f7c027)
 		status_led="belkin:orange:status"
 		;;
